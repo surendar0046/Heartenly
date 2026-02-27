@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heartenly - AI Emotion Guide</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Face API JS -->
+    <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- Background elements for visual flair -->
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+
+        <header>
+            <h1>Heartenly</h1>
+            <p id="app-subtitle">Your Emotional Journey</p>
+        </header>
+
+        <main id="main-content">
+            <!-- Content will be injected here via JS -->
+            <div id="active-screen"></div>
+        </main>
+
+        <nav class="bottom-nav">
+            <button class="nav-item active" data-tab="scan" id="btn-scan">
+                <i class="fa-solid fa-face-smile-beam"></i>
+                <span>AI Scan</span>
+            </button>
+            <button class="nav-item" data-tab="world" id="btn-world">
+                <i class="fa-solid fa-earth-americas"></i>
+                <span>Your World</span>
+            </button>
+            <button class="nav-item" data-tab="updates" id="btn-updates">
+                <i class="fa-solid fa-arrow-trend-up"></i>
+                <span>My Updates</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Models for face-api will be loaded from a public repo for simplicity -->
+    <script type="module" src="main.js"></script>
+</body>
+</html>

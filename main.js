@@ -1,4 +1,4 @@
-// Heartenly App Logic - Version 3.5 (Restored Growth Modules + Multi-Lang)
+// Heartenly App Logic - Version 3.6 (Trending Multi-Hashtag Update)
 const state = {
     currentTab: 'scan',
     scanMode: 'face',
@@ -18,69 +18,23 @@ const onboardingData = {
 
 const updateLinksData = {
     physical: [
-        { label: "15 Min HIIT Home Workout", url: "https://youtube.com/results?search_query=15+min+hiit" },
-        { label: "Daily Hydration Tracker", url: "https://water-tracker.com" },
-        { label: "Posture Correction Plan", url: "https://healthline.com" }
+        { label: "Trending Fitness Workouts", url: "https://youtube.com/results?search_query=trending+fitness+workouts+2024" },
+        { label: "Body Transformation Guide", url: "https://www.menshealth.com" },
+        { label: "Daily Gym Motivation", url: "https://www.instagram.com/explore/tags/gymmotivation/" }
     ],
     mental: [
-        { label: "Journaling for Clarity", url: "https://dayoneapp.com" },
-        { label: "Stoic Philosophy Basics", url: "https://dailystoic.com" },
-        { label: "Digital Detox Checklist", url: "https://freedom.to" }
+        { label: "Mindfulness & Peace", url: "https://headspace.com" },
+        { label: "Anxiety Relief Journaling", url: "https://dayoneapp.com" }
     ],
     career: [
-        { label: "Mastering AI in Workflow", url: "https://coursera.org" },
-        { label: "Communication for Leaders", url: "https://ted.com" },
-        { label: "Personal Branding LinkedIn", url: "https://linkedin.com" }
+        { label: "Industry Success Roadmap", url: "https://linkedin.com" },
+        { label: "AI & Tech Skills 2024", url: "https://coursera.org" }
     ]
 };
 
 const translations = {
-    English: {
-        intro: "Welcome to Heartenly. Your AI Emotional Companion.",
-        start: "Let's Begin",
-        scan: "AI Scan",
-        world: "Your World",
-        updates: "My Updates",
-        face: "Face",
-        mic: "Mic",
-        text: "Text",
-        analyze: "Analyze My Emotion",
-        detected: "Detected: ",
-        ready: "Ready",
-        growthTitle: "Personal Growth Tracks",
-        fetching: "Explore Resources"
-    },
-    Tamil: {
-        intro: "Heartenly-க்கு வரவேற்கிறோம். உங்கள் AI உணர்ச்சி வழிகாட்டி.",
-        start: "தொடங்கலாம்",
-        scan: "AI ஸ்கேன்",
-        world: "உங்கள் உலகம்",
-        updates: "பதிவுகள்",
-        face: "முகம்",
-        mic: "ஒலி",
-        text: "உரை",
-        analyze: "என் உணர்ச்சியை ஆராய்",
-        detected: "கண்டறியப்பட்டது: ",
-        ready: "தயார்",
-        growthTitle: "தனிப்பட்ட வளர்ச்சி வழிகள்",
-        fetching: "வளங்களை ஆராயுங்கள்"
-    },
-    Telugu: {
-        intro: "Heartenlyకి స్వాగతం. మీ AI ఎమోషనల్ కంపానియన్.",
-        start: "ప్రారంభించండి",
-        scan: "AI స్కాన్",
-        world: "మీ ప్రపంచం",
-        updates: "అప్‌డేట్స్",
-        face: "ముఖం",
-        mic: "మైక్",
-        text: "టెక్స్ట్",
-        analyze: "నా భావోద్వేగాన్ని విశ్లేషించు",
-        detected: "కనుగొనబడింది: ",
-        ready: "సిద్ధం",
-        growthTitle: "వ్యక్తిగత ఎదుగుదల",
-        fetching: "వనరులను అన్వేషించండి"
-    }
-    // Hindi, Malayalam, Kannada will default to English if not fully mapped, but keeping core logic consistent
+    English: { intro: "Welcome. Your AI Emotional Companion.", start: "Let's Begin", scan: "AI Scan", world: "Your World", updates: "My Updates", face: "Face", mic: "Mic", text: "Text", analyze: "Analyze My Emotion", detected: "Detected: ", ready: "Ready" },
+    Tamil: { intro: "Heartenly-க்கு வரவேற்கிறோம். உங்கள் AI வழிிகாட்டி.", start: "தொடங்கலாம்", scan: "AI ஸ்கேன்", world: "உங்கள் உலகம்", updates: "பதிவுகள்", face: "முகம்", mic: "ஒலி", text: "உரை", analyze: "என் உணர்ச்சியை ஆராய்", detected: "கண்டறியப்பட்டது: ", ready: "தயார்" }
 };
 
 function init() {
@@ -94,10 +48,10 @@ function renderOnboarding() {
     app.innerHTML = `
         <div class="onboarding-overlay">
             <h1 class="onboarding-title">Heartenly</h1>
-            <div class="setup-section"><h3>Choose Language / மொழி</h3>
+            <div class="setup-section"><h3>Select Language</h3>
                 <div class="pref-grid">${onboardingData.languages.map(l => `<div class="pref-item ${state.language === l ? 'selected' : ''}" onclick="window.setLanguage('${l}')">${l}</div>`).join('')}</div>
             </div>
-            <div class="setup-section"><h3>Interests</h3>
+            <div class="setup-section"><h3>Your Loves</h3>
                 <div class="pref-grid">${onboardingData.categories.map(c => `<div class="pref-item ${state.preferences.includes(c) ? 'selected' : ''}" onclick="window.togglePref('${c}')">${c}</div>`).join('')}</div>
             </div>
             <button class="start-btn" onclick="window.completeOnboarding()">${t.start}</button>
@@ -160,7 +114,6 @@ function renderScanScreen(container) {
             <div style="text-align:center; margin-top:20px;">
                 <button class="analyze-btn" id="analyze-trigger" style="width:80%;" onclick="window.handleAnalysis()">${t.analyze}</button>
             </div>
-            <canvas id="hidden-canvas" style="display:none;"></canvas>
         </div>
     `;
     updateScanView();
@@ -177,7 +130,7 @@ function updateScanView() {
     } else if (state.scanMode === 'mic') {
         media.innerHTML = `<div class="mic-view"><div class="mic-circle"><i class="fa-solid fa-microphone"></i></div><div class="emotion-badge"><div class="emotion-dot" id="e-dot"></div><span id="e-text">Listening</span></div></div>`;
     } else {
-        media.innerHTML = `<div class="text-view"><textarea id="t-input" placeholder="How's your day?"></textarea></div>`;
+        media.innerHTML = `<div class="text-view"><textarea id="t-input" placeholder="Type here..."></textarea></div>`;
     }
 }
 
@@ -195,14 +148,10 @@ function stopCamera() {
 
 window.handleAnalysis = async () => {
     const line = document.getElementById('face-line');
-    if (state.scanMode === 'face') {
-        if (line) line.style.display = 'block';
-        await new Promise(r => setTimeout(r, 2000));
-        if (line) line.style.display = 'none';
-        applyEmotion(['happy', 'sad', 'neutral'][Math.floor(Math.random() * 3)]);
-    } else {
-        applyEmotion(['happy', 'sad', 'neutral'][Math.floor(Math.random() * 3)]);
-    }
+    if (line) line.style.display = 'block';
+    await new Promise(r => setTimeout(r, 2000));
+    if (line) line.style.display = 'none';
+    applyEmotion(['happy', 'sad', 'neutral'][Math.floor(Math.random() * 3)]);
 };
 
 function applyEmotion(e) {
@@ -219,16 +168,28 @@ function applyEmotion(e) {
 
 function renderWorldScreen(container) {
     const t = translations[state.language] || translations.English;
-    const q = `${state.language} ${state.preferences.join(' ')} ${state.currentEmotion === 'sad' ? 'happy' : 'celebration'}`;
+    // MULTIPLE HASHTAG LOGIC
+    const mood = state.currentEmotion === 'sad' ? 'happy' : 'celebration';
+    const lang = state.language;
+    const userPrefs = state.preferences.slice(0, 3).map(p => p.toLowerCase());
+
+    // User suggestion based trending tags
+    const trendingTags = ["tamilmemes", "trendingsongs", "cinema", "wholesome", "viral"];
+    const combinedTags = [...userPrefs, ...trendingTags].slice(0, 5).map(tag => `#${tag}`).join(' ');
+    const query = `${lang} ${mood} ${userPrefs.join(' ')} ${trendingTags.join(' ')}`;
+
     container.innerHTML = `
         <div class="screen">
             <h2>${t.world}</h2>
             <div class="world-grid">
-                <div class="social-card" onclick="window.open('https://instagram.com/explore/tags/${state.preferences[0].toLowerCase()}', '_blank')"><i class="fa-brands fa-instagram"></i></div>
-                <div class="social-card" onclick="window.open('https://youtube.com/results?search_query=${q}', '_blank')"><i class="fa-brands fa-youtube"></i></div>
-                <div class="social-card" onclick="window.open('https://facebook.com/search/top/?q=${q}', '_blank')"><i class="fa-brands fa-facebook-f"></i></div>
+                <div class="social-card" onclick="window.open('https://instagram.com/explore/tags/${userPrefs[0] || 'trending'}/', '_blank')"><i class="fa-brands fa-instagram"></i></div>
+                <div class="social-card" onclick="window.open('https://youtube.com/results?search_query=${query}', '_blank')"><i class="fa-brands fa-youtube"></i></div>
+                <div class="social-card" onclick="window.open('https://facebook.com/search/top/?q=${query}', '_blank')"><i class="fa-brands fa-facebook-f"></i></div>
             </div>
-            <div class="feed-item" style="margin-top:20px;"><h3>Boost Logic</h3><p>Filters: ${state.language} + ${state.preferences[0]}</p></div>
+            <div class="feed-item" style="margin-top:20px;">
+                <h3>Trending Boost</h3>
+                <p style="font-size:0.8rem; opacity:0.7;">Tags: ${combinedTags}</p>
+            </div>
         </div>
     `;
 }
@@ -264,26 +225,31 @@ function renderUpdatesScreen(container) {
 
 window.toggleLinks = (cat) => {
     const box = document.getElementById(`links-${cat}`);
-    const t = translations[state.language] || translations.English;
     if (box.style.display === 'block') { box.style.display = 'none'; return; }
-
     document.querySelectorAll('.links-container').forEach(c => c.style.display = 'none');
 
-    // Core 3 Logic
     let html = '';
     if (updateLinksData[cat]) {
         html = updateLinksData[cat].map(l => `<a href="${l.url}" target="_blank" class="resource-link">${l.label}</a>`).join('');
-    } else {
-        const query = `${cat} ${state.language} ${state.preferences.join(' ')}`;
-        html = `<a href="https://youtube.com/results?search_query=${query}" target="_blank" class="resource-link">Masterclass</a>`;
     }
 
-    // Shorts Logic
-    const moodTag = state.currentEmotion === 'sad' ? 'happy' : 'success';
+    // MULTIPLE HASHTAGS FOR SHORTS
+    let hashtags = ["trending"];
+    if (cat === 'physical') hashtags = ["fitnessmotivation", "bodybuilding", "workout", "viralreels"];
+    else if (cat === 'cinema') hashtags = ["cinema", "moviereview", "blockbuster"];
+    else if (cat === 'memes') hashtags = ["tamilmemes", "funny", "laugh", "trendingsongs"];
+
+    const mood = state.currentEmotion === 'sad' ? 'happy' : 'success';
+    const tagQuery = hashtags.map(t => `#${t}`).join(' ');
+    const instaSearch = hashtags[0];
+
     html += `
-        <div style="display:flex; gap:10px; margin-top:10px;">
-            <a href="https://www.instagram.com/explore/tags/${moodTag}${cat}/" target="_blank" class="shorts-btn"><i class="fa-brands fa-instagram"></i> Reels</a>
-            <a href="https://www.youtube.com/results?search_query=${cat}+shorts+${state.language}" target="_blank" class="shorts-btn"><i class="fa-brands fa-youtube"></i> Shorts</a>
+        <div style="display:flex; flex-direction:column; gap:8px; margin-top:10px;">
+            <p style="font-size:0.75rem; color:var(--primary-light);">Trending: ${tagQuery}</p>
+            <div style="display:flex; gap:10px;">
+                <a href="https://www.instagram.com/explore/tags/${instaSearch}/" target="_blank" class="shorts-btn"><i class="fa-brands fa-instagram"></i> Reels</a>
+                <a href="https://www.youtube.com/results?search_query=${cat}+${mood}+${hashtags.join('+')}" target="_blank" class="shorts-btn"><i class="fa-brands fa-youtube"></i> Shorts</a>
+            </div>
         </div>
     `;
 
